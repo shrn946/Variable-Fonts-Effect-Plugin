@@ -21,6 +21,9 @@ function text_effect_enqueue_scripts() {
 add_action('wp_enqueue_scripts', 'text_effect_enqueue_scripts');
 
 function custom_text_shortcode($atts) {
+    // Define a counter variable inside the function
+    static $custom_text_shortcode_counter = 0;
+
     // Extract shortcode attributes
     $atts = shortcode_atts(
         array(
@@ -33,11 +36,16 @@ function custom_text_shortcode($atts) {
     // Sanitize shortcode attribute
     $text = esc_html($atts['text']);
 
-    // Generate a unique ID for this shortcode instance
-    $unique_id = 'custom_text_' . uniqid();
+    // Increment the counter for each shortcode instance
+    $custom_text_shortcode_counter++;
 
-    // Build the output HTML with the unique ID
-    $output = "<div id='fit' class='$unique_id'>";
+    // Get the current page ID
+    global $post;
+    $current_page_id = is_object($post) ? $post->ID : 0;
+
+    // Build the output HTML with the unique ID and current page ID
+    $unique_id = 'effect-text-' . sprintf('%02d', $custom_text_shortcode_counter) . '-page-' . $current_page_id;
+    $output = "<div id='fit' class='$unique_id' data-page-id='$current_page_id'>";
     $output .= "<h1 id='title' class='$unique_id'>$text</h1>";
     $output .= "</div>";
 
