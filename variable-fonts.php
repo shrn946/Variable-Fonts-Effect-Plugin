@@ -33,9 +33,12 @@ function custom_text_shortcode($atts) {
     // Sanitize shortcode attribute
     $text = esc_html($atts['text']);
 
-    // Build the output HTML
-    $output = "<div id='fit'>";
-    $output .= "<h1 id='title'>$text</h1>";
+    // Generate a unique ID for this shortcode instance
+    $unique_id = 'custom_text_' . uniqid();
+
+    // Build the output HTML with the unique ID
+    $output = "<div id='fit' class='$unique_id'>";
+    $output .= "<h1 id='title' class='$unique_id'>$text</h1>";
     $output .= "</div>";
 
     return $output;
